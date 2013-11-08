@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "xkcd substitutions",
+  "description": "Make reading the news more fun.",
+  "version": "1.0",
+  "permissions": ["http://*.google.com/", "https://*.google.com/"],
+  "content_scripts": [ {
+      "js": [ "jquery.min.js", "substitutions.js" ],
+      "matches": [ "<all_urls>" ],
+      "run_at": "document_end"
+   } ],
+   "icons": {
+      "128": "icon128.png"
+   }
+}
