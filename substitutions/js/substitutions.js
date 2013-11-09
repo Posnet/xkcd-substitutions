@@ -14,7 +14,7 @@ jQuery.fn.textWalk = function( fn ) {
     return this;
 };
 
-$('body').textWalk(function() {
+$('body').textWalk(function(replacements2) {
     //The repetition seems unecessary, but getting regex to work correctly with mixed case
     //was beyond my abilities.
     //Unfortunatly it can't handle dynamic content, but it shouldn't slow down any web pages.

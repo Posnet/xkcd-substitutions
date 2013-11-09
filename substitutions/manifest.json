@@ -2,14 +2,30 @@
   "manifest_version": 2,
   "name": "xkcd substitutions",
   "description": "Make reading the news more fun.",
-  "version": "1.0",
-  "permissions": ["http://*.google.com/", "https://*.google.com/"],
+  "version": "1.1",
+  "browser_action": {
+    "default_icon": {
+      "19": "images/enabled.png"
+    },
+    "default_title": "click to disabled xkcd substitutions"      
+  },
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "http://*/*",
+    "https://*/*"
+  ],
   "content_scripts": [ {
-      "js": [ "jquery.min.js", "substitutions.js" ],
+      "js": [ "js/jquery.min.js"],
       "matches": [ "<all_urls>" ],
+      "all_frames": true,
       "run_at": "document_end"
    } ],
    "icons": {
-      "128": "icon128.png"
+      "128": "images/icon128.png"
    }
 }
