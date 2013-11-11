@@ -14,70 +14,50 @@ jQuery.fn.textWalk = function( fn ) {
     return this;
 };
 
+// taken from http://stackoverflow.com/questions/17264639/replace-text-but-keep-case
+function matchCase(text, pattern) {
+    var result = '';
+
+    for(var i = 0; i < text.length; i++) {
+        var c = text.charAt(i);
+        var p = pattern.charCodeAt(i);
+
+        if(p >= 65 && p < 65 + 26) {
+            result += c.toUpperCase();
+        } else {
+            result += c.toLowerCase();
+        }
+    }
+
+    return result;
+}
+
 $('body').textWalk(function(replacements2) {
-    //The repetition seems unecessary, but getting regex to work correctly with mixed case
-    //was beyond my abilities.
     //Unfortunatly it can't handle dynamic content, but it shouldn't slow down any web pages.
     replacements = [
-    ['Keyboard', 'Leopard'],
-    ['KEYBOARD', 'LEOPARD'],
     ['keyboard', 'leopard'],
-    ['Keyboards', 'Leopards'],
-    ['KEYBOARDS', 'LEOPARDS'],
     ['keyboards', 'leopards'],
-    ['Witnesses', 'These dudes I know'],
-    ['WITNESSES', 'THESE DUDES I KNOW'],
     ['witnesses', 'these dudes I know'],
-    ['Allegedly', 'Kinda Probably'],
-    ['ALLEGEDLY', 'KINDAPROBABLY'],
     ['allegedly', 'kinda probably'],
-    ['New Study', 'Tumblr Post'],
-    ['NEW STUDY', 'TUMBLR POST'],
     ['new study', 'tumblr post'],
-    ['Rebuild', 'Avenge'],
-    ['REBUILD', 'AVENGE'],
     ['rebuild', 'avenge'],
-    ['Space', 'Spaaaaaace'],
-    ['SPACE', 'SPAAAAAACE'],
     ['space', 'spaaaaaace'],
-    ['Google Glass', 'Virtual Boy'],
-    ['GOOGLE GLASS', 'VIRTUAL BOY'],
     ['google glass', 'virtual boy'],
-    ['Smartphone', 'Pokedex'],
-    ['SMARTPHONE', 'POKEDEX'],
     ['smartphone', 'pokedex'],
-    ['Electric', 'Atomic'],
-    ['ELECTRIC', 'ATOMIC'],
     ['electric', 'atomic'],
-    ['Senator', 'Elf-Lord'],
-    ['SENATOR', 'ELF-LORD'],
     ['senator', 'elf-lord'],
-    ['Senators', 'Elf-Lords'],
-    ['SENATORS', 'ELF-LORDS'],
     ['senators', 'elf-lords'],
-    ['Car', 'Cat'],
-    ['CAR', 'CAT'],
     ['car', 'cat'],
-    ['Cars', 'Cats'],
-    ['CARS', 'CATS'],
     ['cars', 'cats'],
-    ['Election', 'Eating Contest'],
-    ['ELECTION', 'EATING CONTEST'],
     ['election', 'eating contest'],
-    ['Elections', 'Eating Contests'],
-    ['ELECTIONS', 'EATING CONTESTS'],
     ['elections', 'eating contests'],
-    ['Congressional Leaders', 'river spirits'],
-    ['CONGRESSIONAL LEADERS', 'river spirits'],
     ['congressional leaders', 'river spirits'],
-    ['Homeland Security', 'Homestar Runner'],
-    ['HOMELAND SECURITY', 'HOMESTAR RUNNER'],
     ['homeland security', 'homestar runner'],
-    ['Could not be reached for comment', 'Is guilty and everyone knows it'],
-    ['COULD NOT BE REACHED FOR COMMENT', 'IS GUILTY AND EVERYONE KNOWS IT'],
     ['could not be reached for comment', 'is guilty and everyone knows it']];
     for (var i = replacements.length - 1; i >= 0; i--) {
-        original = RegExp("\\b" + replacements[i][0] + "\\b", 'g');
-        this.data = this.data.replace(original, replacements[i][1]);
-    };
+        original = RegExp("\\b" + replacements[i][0] + "\\b", 'gi');
+        this.data = this.data.replace(original, function(match) {
+            return matchCase(replacements[i][1], match);
+        });
+    }
 });
