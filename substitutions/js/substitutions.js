@@ -1,23 +1,6 @@
-// obtained from http://stackoverflow.com/questions/6012163/whats-a-good-alternative-to-html-rewriting/6012345#6012345
 // Tribute to  justin.giancola and the s/keyboard/leopard chrome extension.
 // Icon and idea are from www.xkcd.com/1288
-jQuery.fn.textWalk = function( fn ) {
-    this.contents().each( jwalk );
-    function jwalk() {
-        var node = this.nodeName.toLowerCase();
-        if( node === '#text' ) {
-            fn.call( this );
-        } else if( this.nodeType === 1 && this.childNodes && this.childNodes[0] && node !== 'script' && node !== 'textarea' ) {
-            $(this).contents().each( jwalk );
-        }
-    }
-    return this;
-};
-
-$('body').textWalk(function(replacements2) {
-    //The repetition seems unecessary, but getting regex to work correctly with mixed case
-    //was beyond my abilities.
-    //Unfortunatly it can't handle dynamic content, but it shouldn't slow down any web pages.
+substitute = function(node) {
     replacements = [
     ['Keyboard', 'Leopard'],
     ['KEYBOARD', 'LEOPARD'],
@@ -79,8 +62,23 @@ $('body').textWalk(function(replacements2) {
     ['Could not be reached for comment', 'Is guilty and everyone knows it'],
     ['COULD NOT BE REACHED FOR COMMENT', 'IS GUILTY AND EVERYONE KNOWS IT'],
     ['could not be reached for comment', 'is guilty and everyone knows it']];
+    var ignore = { "STYLE":0, "SCRIPT":0, "NOSCRIPT":0, "IFRAME":0, "OBJECT":0 };
+    if (node.tagName in ignore){
+        return;
+    }
+
     for (var i = replacements.length - 1; i >= 0; i--) {
         original = RegExp("\\b" + replacements[i][0] + "\\b", 'g');
-        this.data = this.data.replace(original, replacements[i][1]);
+        node.data = node.data.replace(original, replacements[i][1]);
     };
+}
+
+$(function() {
+    var iter =  document.createNodeIterator(document.body, NodeFilter.SHOW_TEXT);
+    var nodes = [];
+    while(node = iter.nextNode()) {
+        substitute(node);
+    }
 });
+
+
