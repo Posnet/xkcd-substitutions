@@ -1,9 +1,9 @@
 // Tribute to  justin.giancola and the s/keyboard/leopard chrome extension.
 // Icon and idea are from www.xkcd.com/1288
-var substitute = function(node) {
-	"use strict";
-     var replacements, ignore, i;
-	 replacements = [
+var substitute = (function() {
+     "use strict";
+     var replacements, ignore, i, replacementsObject, original;
+     replacements = [
           ['Keyboard', 'Leopard'],
           ['KEYBOARD', 'LEOPARD'],
           ['keyboard', 'leopard'],
@@ -65,6 +65,13 @@ var substitute = function(node) {
           ['COULD NOT BE REACHED FOR COMMENT', 'IS GUILTY AND EVERYONE KNOWS IT'],
           ['could not be reached for comment', 'is guilty and everyone knows it']
      ];
+
+     replacementsObject = [];
+
+     for (i = replacements.length - 1; i >= 0; i--) {
+          original = RegExp("\\b" + replacements[i][0] + "\\b", 'g');
+          replacementsObject.push([original, replacements[i][1]]);
+     }
      ignore = {
           "STYLE": 0,
           "SCRIPT": 0,
@@ -72,15 +79,18 @@ var substitute = function(node) {
           "IFRAME": 0,
           "OBJECT": 0
      };
-     if (node.tagName in ignore) {
-          return;
-     }
 
-     for (i = replacements.length - 1; i >= 0; i--) {
-          original = RegExp("\\b" + replacements[i][0] + "\\b", 'g');
-          node.data = node.data.replace(original, replacements[i][1]);
-     }
-};
+     return function(node) {
+          var i;
+          if (node.tagName in ignore) {
+               return;
+          }
+
+          for (i = replacementsObject.length - 1; i >= 0; i--) {
+               node.data = node.data.replace(replacements[i][0], replacements[i][1]);
+          }
+     };
+})();
 
 $(function() {
      "use strict";
