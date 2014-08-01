@@ -7,7 +7,7 @@
     "default_icon": {
       "19": "images/enabled.png"
     },
-    "default_title": "click to disabled xkcd substitutions"      
+    "default_title": "click to disable xkcd substitutions"      
   },
   "background": {
     "scripts": ["js/background.js"],
