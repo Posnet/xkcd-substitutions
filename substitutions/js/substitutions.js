@@ -59,11 +59,14 @@ substitute = function(node) {
     ['Homeland Security', 'Homestar Runner'],
     ['HOMELAND SECURITY', 'HOMESTAR RUNNER'],
     ['homeland security', 'homestar runner'],
-    ['Homeland security', 'Homestar runner']
+    ['Homeland security', 'Homestar runner'],
     ['Could not be reached for comment', 'Is guilty and everyone knows it'],
     ['COULD NOT BE REACHED FOR COMMENT', 'IS GUILTY AND EVERYONE KNOWS IT'],
     ['Could Not Be Reached For Comment', 'Is Guilty And Everyone Knows It'],
-    ['could not be reached for comment', 'is guilty and everyone knows it']];
+    ['could not be reached for comment', 'is guilty and everyone knows it'],
+    ['Force', 'Horse'],
+    ['FORCE', 'HORSE'],
+    ['force', 'horse']];
     var ignore = { "STYLE":0, "SCRIPT":0, "NOSCRIPT":0, "IFRAME":0, "OBJECT":0, "INPUT":0, "FORM":0, "TEXTAREA":0 };
     if (node.tagName in ignore){
         return;
