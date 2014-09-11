@@ -72,7 +72,7 @@ substitute = function(node) {
         return;
     }
 
-    for (var i = replacements.length - 1; i >= 0; i--) {
+    for (var i = 0; i < replacements.length; i++) {
         original = RegExp("\\b" + replacements[i][0] + "\\b", 'g');
         node.data = node.data.replace(original, replacements[i][1]);
     };
