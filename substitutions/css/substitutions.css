@@ -1,10 +1,32 @@
 
+@font-face {
+font-family: "xkcd";
+src: url("../font/xkcd.otf") format("opentype");
+}
 
 .title {
     width: 100%;
     text-align: center;
 }
+h1, input, button {
+    font-family: "xkcd";
+    letter-spacing: 2px;
+}
 
 .save-btn {
-    margin-top: 30px;
+    /*margin-right: 0 auto;*/
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    /*position: relative;*/
+    margin-left: 10%;
+    /*margin-right: 100%;*/
+}
+
+.ginp {
+    margin-top: 10px;
+}
+
+.headings {
+    text-align: center;
 }

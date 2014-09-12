@@ -35,22 +35,21 @@ $(document).ready(function(){
     $(".add-more").click(function(e){
         e.preventDefault();
         var addto = "#field" + next;
-        var addRemove = "#field" + (next);
+        var addRemove = "#replace" + next;
         next = next + 1;
-        var newIn = '<input autocomplete="off" class="input form-control" id="field' + next + '" name="field' + next + '" type="text">';
+        var newIn = '<div id="field' + next + '" class="row">' + '<div class="col-xs-6 ginp"> <input autocomplete="off" id="origin' + next + '" name="origin' + next + '" type="text" class="input form-control">' + '</div><div class="col-xs-6 ginp"><div class="input-group">' + '<input autocomplete="off" id="replace' + (next - 1) + '" name="replace' + next + '" type="text" class="input form-control"> </div>'
         var newInput = $(newIn);
-        var removeBtn = '<button id="remove' + (next - 1) + '" class="btn btn-danger remove-me" ><i class="fa fa-remove"></i></button></div><div id="field">';
+        var removeBtn = '<span class="input-group-btn"> <button id="remove' + (next) + '" class="btn btn-danger remove-me" type="button"><i class="fa fa-remove"></i></button></span>'
         var removeButton = $(removeBtn);
-        $(addto).after(newInput);
+        $(addto).after(newIn);
         $(addRemove).after(removeButton);
-        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
-        $("#count").val(next);  
+        // $("#field" + next).attr('data-source',$(addto).attr('data-source'));
+        // $("#count").val(next);  
         
             $('.remove-me').click(function(e){
                 e.preventDefault();
-                var fieldNum = this.id.charAt(this.id.length-1);
+                var fieldNum = this.id.substring(6);
                 var fieldID = "#field" + fieldNum;
-                $(this).remove();
                 $(fieldID).remove();
             });
     }); 
