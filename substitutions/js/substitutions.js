@@ -1,42 +1,30 @@
 // Tribute to  justin.giancola and the s/keyboard/leopard chrome extension.
 // Icon and idea are from www.xkcd.com/1288
-
-
 chrome.runtime.sendMessage("config", function(response) {
+    "use strict";
     // taken from http://stackoverflow.com/questions/17264639/replace-text-but-keep-case
     function matchCase(text, pattern) {
         var result = '';
-
         for (var i = 0; i < text.length; i++) {
             var c = text.charAt(i);
             var p = pattern.charCodeAt(i);
-
             if (p >= 65 && p < 65 + 26) {
                 result += c.toUpperCase();
             } else {
                 result += c.toLowerCase();
             }
         }
-
         return result;
     }
-
-
-
     var substitute = (function() {
         "use strict";
         var replacements, ignore, i, replacementsObject, original;
-
         replacements = response;
-
         replacementsObject = [];
-
-
         for (i = replacements.length - 1; i >= 0; i--) {
             original = new RegExp("\\b" + replacements[i][0] + "\\b", "gi");
             replacementsObject.push([original, replacements[i][1]]);
         }
-
         return function(node) {
             var i;
             var ignore = {
@@ -49,7 +37,6 @@ chrome.runtime.sendMessage("config", function(response) {
                 "FORM": 0,
                 "TEXTAREA": 0
             };
-
             if (node.tagName in ignore) {
                 return;
             }
@@ -61,15 +48,9 @@ chrome.runtime.sendMessage("config", function(response) {
         };
     })();
 
-    $(function() {
-        "use strict";
-        var node, iter;
-        var iter = document.createNodeIterator(document.body, NodeFilter.SHOW_TEXT);
-        // var nodes = [];
-        while ((node = iter.nextNode())) {
-            substitute(node);
-
-        }
-    });
-
+    var node, iter;
+    var iter = document.createNodeIterator(document.body, NodeFilter.SHOW_TEXT);
+    while ((node = iter.nextNode())) {
+        substitute(node);
+    }
 });

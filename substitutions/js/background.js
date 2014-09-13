@@ -1,5 +1,5 @@
 //Default replacements
-replacements = [
+var replacements = [
     ['keyboard', 'leopard'],
     ['keyboards', 'leopards'],
     ['force', 'horse'],
@@ -24,9 +24,13 @@ replacements = [
     ['could not be reached for comment', 'is guilty and everyone knows it'],
     ['force', 'horse'],
 ];
-
-
-
+//Default Blacklist
+var blacklisted_sites = ["docs.google.com",
+    "gmail.com",
+    "mail.gooogle.com",
+    "mail.yahoo.com",
+    "outlook.com"
+]
 chrome.tabs.onUpdated.addListener(function(tabId, info) {
     if (info.status === "complete") {
         status = chrome.storage.sync.get(null, function(result) {
@@ -39,7 +43,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, info) {
         });
     }
 });
-
 chrome.runtime.onStartup.addListener(function() {
     chrome.storage.sync.get("status", function(result) {
         if (result["status"] === null) {
@@ -49,13 +52,11 @@ chrome.runtime.onStartup.addListener(function() {
         }
     });
 });
-
 chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set({
         "status": "enabled"
     });
 });
-
 chrome.browserAction.onClicked.addListener(function() {
     status = chrome.storage.sync.get("status", function(result) {
         if (result["status"] === null) {
@@ -87,9 +88,6 @@ chrome.browserAction.onClicked.addListener(function() {
         });
     });
 });
-
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request == "config")
-      sendResponse(replacements);
-  });
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request == "config") sendResponse(replacements);
+});

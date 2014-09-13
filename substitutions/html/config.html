@@ -7,40 +7,57 @@
         <title>XKCD Substitutions Configuration</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../css/substitutions.css">
-        <link rel="shortcut icon" type="image/png" href="images/enabled.png">
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="../images/enabled.png">
         <script src="../js/jquery.min.js" type="text/javascript"></script>
         <script src="../js/options.js" type="text/javascript"></script>
     </head>
-    <body>
+    <body class="col-xs-10 col-xs-offset-1">
         <div class="heading">
-        <div class="title">
-            <h1>Substitutions</h1>
-        </div>
-             <div class="col-sm-2 col-xs-offset-1 save-btn">
-                    <button class="btn btn-success col-xs-12" type="submit">
-                    <i class="fa fa-check"></i> Save
-                    </button>
-                </div>
+            <div class="title">
+                <h1> XKCD Substitutions</h1>
+            </div>
+            <div>
+                <button id="save" class="btn btn-success">
+                <i class="fa fa-check"></i> Save
+                </button>
+                <button id="reset" class="btn btn-warning reset-btn">
+                <i class="fa fa-refresh"></i> Reset to defaults
+                </button>
+            </div>
         </div>
         <div>
-            <div  id="field" class="col-xs-10 col-xs-offset-1">
-                <div  id="field1" class="row">
-                    <div class="col-xs-6">
-                            <input autocomplete="off" id="origin1" name="origin1" type="text" type="text" class="input form-control field">
+            <h4>Website Blacklist</h4>
+            <p>While this extension tries not to effect things like login forms or emails, due to the complex nature of websites this cannot be garanteed. So there is a way to stop this extension working on specific sites.</p>
+            <p>If a websites address/URL contains any of the following sites, this extension will ignore it.</p>
+            <p>Feel free to add your own to the list.</p>
+            <form id="blacklist">
+                    <div>
+                        <input autocomplete="off" placeholder="A comma separated list of websites" id="website-blacklist" type="text" type="text" class="input form-control field">
                     </div>
-                    <div class="col-xs-6">
-                        <div class="input-group">
-                            <input autocomplete="off" id="replace0" name="replace1" type="text" type="text" class="input form-control field">
-                            <span class="input-group-btn">
-                            <button class="btn btn-info add-more" type="button"><i class="fa fa-plus"></i></button>
-                            </span>
+            </form>
+        </div>
+        <div>
+            <div>
+                <h4>Substitutions List</h4>
+                <p>The original word will be replaced with the substituted word.</p>
+                <form id="replacements">
+                    <div  id="field1" class="row ginp first-row">
+                        <div class="col-xs-6">
+                            <input autocomplete="off" placeholder="original" id="origin1" name="origin1" type="text" type="text" class="input form-control field">
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <input autocomplete="off" id="replace1" placeholder="substitution" name="replace1" type="text" type="text" class="input form-control field">
+                                <span class="input-group-btn add-rep">
+                                <button class="btn btn-info add-more" type="button"><i class="fa fa-plus add-more-icon"></i></button>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                </div> <!-- .row -->
-           
-                </div> <!-- login coloumn -->
-            </body>
-        </html>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
