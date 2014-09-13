@@ -12,6 +12,7 @@ src: url("../fonts/xkcd.otf") format("opentype");
 body, h1, h3, button, .btn {
     font-family: "xkcd";
     word-spacing: 2px;
+    margin-bottom: 40px;
 }
 
 p {
@@ -33,7 +34,7 @@ p {
 }
 
 .save-btn{
-    width: 100px;
+    width: 140px;
 }
 
 .reset-btn{

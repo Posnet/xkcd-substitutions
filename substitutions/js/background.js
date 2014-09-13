@@ -22,19 +22,29 @@ var default_replacements = [
     ['congressional leaders', 'river spirits'],
     ['homeland security', 'homestar runner'],
     ['could not be reached for comment', 'is guilty and everyone knows it'],
-    ['force', 'horse'],
 ];
 //Default Blacklist
 var default_blacklisted_sites = ["docs.google.com",
     "gmail.com",
-    "mail.gooogle.com",
+    "mail.google.com",
     "mail.yahoo.com",
-    "outlook.com"
+    "outlook.com",
 ]
 
-chrome.tabs.onUpdated.addListener(function(tabId, info) {
+function checkBlackList(url, blacklist){
+    url = url.toLowerCase() || "";
+    blacklist = blacklist || [];
+    for (var i = blacklist.length - 1; i >= 0; i--) {
+        if (url.indexOf(blacklist[i]) > -1){
+            return false;
+        }
+    };
+    return true;
+}
+
+chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
     status = chrome.storage.sync.get(null, function(result) {
-        if (result["status"] === "enabled") {
+        if (result["status"] === "enabled" && checkBlackList(tab.url, result['blacklist'])) {
             chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     if (request == "config" && result["replacements"]) {
                         sendResponse(result["replacements"]);
@@ -47,8 +57,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, info) {
         }
     });
 });
+
 chrome.runtime.onStartup.addListener(function() {
-    chrome.storage.sync.get("status", function(result) {
+    chrome.storage.sync.get(null, function(result) {
         if (result["status"] === null) {
             chrome.storage.sync.set({
                 "status": "enabled"
