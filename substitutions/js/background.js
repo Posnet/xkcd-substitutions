@@ -22,6 +22,7 @@ var default_replacements = [
     ['congressional leaders', 'river spirits'],
     ['homeland security', 'homestar runner'],
     ['could not be reached for comment', 'is guilty and everyone knows it'],
+    ['batman', 'a man dressed like a bat'],
 ];
 //Default Blacklist
 var default_blacklisted_sites = ["docs.google.com",
@@ -67,7 +68,7 @@ function addMessage(request, sender, sendResponse) {
 }
 
 function fixDataCorruption() {
-    if (debug) console.log("updateStore"); 
+    if (debug) console.log("updateStore");
     chrome.storage.sync.get(null, function(result) {
         if (!result["status"]) {
             chrome.storage.sync.set({
@@ -88,7 +89,7 @@ function fixDataCorruption() {
 }
 
 function toggleActive() {
-        if (debug) console.log("clickfire");
+    if (debug) console.log("clickfire");
     chrome.storage.sync.get("status", function(result) {
         if (result["status"] === null) {
             status = "enabled";
