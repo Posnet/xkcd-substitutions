@@ -1,6 +1,18 @@
 // var saved = true;
 var next = 1;
 
+function makeDirty() {
+  $("#save").removeClass("btn-success").addClass("btn-warning").children("i").removeClass("fa-check").addClass("fa-save");
+  $("#save span").text(" Click to Save");
+  // saved = false;
+}
+
+function makeClean() {
+  $("#save").removeClass("btn-warning").addClass("btn-success").children("i").removeClass("fa-save").addClass("fa-check");
+  $("#save span").text("Saved");
+  // saved = true;  
+}
+
 function saveOptions(e) {
   e.preventDefault;
   var blacklist = $("#website-blacklist").val().replace(/\s+/g, " ").toLowerCase().split(",");
@@ -20,21 +32,21 @@ function saveOptions(e) {
       "replacements": replacements
     },
     function() {
-      makeClean()
+      makeClean();
     }
   );
 }
 
-function makeDirty() {
-  $("#save").removeClass("btn-success").addClass("btn-warning").children("i").removeClass("fa-check").addClass("fa-save");
-  $("#save span").text(" Click to Save");
-  // saved = false;
-}
-
-function makeClean() {
-  $("#save").removeClass("btn-warning").addClass("btn-success").children("i").removeClass("fa-save").addClass("fa-check");
-  $("#save span").text("Saved");
-  // saved = true;  
+function reset(){
+    chrome.storage.sync.set({
+      "blacklist": default_blacklisted_sites,
+      "replacements": default_replacements
+    },
+    function() {
+      makeClean();
+      populateSettings();
+    }
+  ); 
 }
 
 function populateSettings() {
