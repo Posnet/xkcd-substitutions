@@ -31,8 +31,9 @@ var blacklisted_sites = ["docs.google.com",
     "mail.yahoo.com",
     "outlook.com"
 ]
+
+
 chrome.tabs.onUpdated.addListener(function(tabId, info) {
-    if (info.status === "complete") {
         status = chrome.storage.sync.get(null, function(result) {
             if (result["status"] === "enabled") {
                 chrome.tabs.executeScript(tabId, {
@@ -41,7 +42,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, info) {
                 });
             }
         });
-    }
 });
 chrome.runtime.onStartup.addListener(function() {
     chrome.storage.sync.get("status", function(result) {
