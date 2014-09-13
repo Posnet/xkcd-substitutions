@@ -31,6 +31,8 @@ var default_blacklisted_sites = ["docs.google.com",
     "outlook.com",
 ]
 
+debug = false;
+
 function checkBlackList(url, blacklist) {
     url = url.toLowerCase() || "";
     blacklist = blacklist || [];
@@ -43,7 +45,7 @@ function checkBlackList(url, blacklist) {
 }
 
 function injectionScript(tabId, info, tab) {
-    console.log("injection fire");
+    if (debug) console.log("injection fire");
     chrome.storage.sync.get(null, function(result) {
         if (result["status"] === "enabled" && checkBlackList(tab.url, result['blacklist'])) {
             chrome.tabs.executeScript(tabId, {
@@ -54,9 +56,18 @@ function injectionScript(tabId, info, tab) {
     });
 }
 
-
+function addMessage(request, sender, sendResponse) {
+    if (debug) console.log("message fire");
+    chrome.storage.sync.get(null, function(result) {
+        if (request === "config" && result["replacements"]) {
+            sendResponse(result["replacements"]);
+        }
+    });
+    return true;
+}
 
 function fixDataCorruption() {
+    if (debug) console.log("updateStore"); 
     chrome.storage.sync.get(null, function(result) {
         if (!result["status"]) {
             chrome.storage.sync.set({
@@ -77,8 +88,8 @@ function fixDataCorruption() {
 }
 
 function toggleActive() {
+        if (debug) console.log("clickfire");
     chrome.storage.sync.get("status", function(result) {
-        console.log("clickfire");
         if (result["status"] === null) {
             status = "enabled";
         } else {
@@ -109,18 +120,8 @@ function toggleActive() {
     });
 }
 
-
-
 chrome.browserAction.onClicked.addListener(toggleActive);
-chrome.runtime.onMessage.addListener(function addMessage(request, sender, sendResponse) {
-    console.log("message fire");
-    chrome.storage.sync.get(null, function(result) {
-        if (request === "config" && result["replacements"]) {
-            sendResponse(result["replacements"]);
-            console.log(sender, result["replacements"]);
-        }
-    });
-});
+chrome.runtime.onMessage.addListener(addMessage);
 chrome.tabs.onUpdated.addListener(injectionScript);
 chrome.runtime.onInstalled.addListener(fixDataCorruption);
 chrome.runtime.onStartup.addListener(fixDataCorruption);

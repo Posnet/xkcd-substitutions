@@ -1,53 +1,84 @@
 
 @font-face {
-font-family: "xkcd";
-src: url("../fonts/xkcd.otf") format("opentype");
+
+    font-family: "xkcd";
+
+    src: url("../fonts/xkcd.otf") format("opentype");
+
 }
 
 .title {
+
     width: 100%;
+
     text-align: center;
+
     margin-bottom: 20px;
+
 }
+
 body, h1, h3, button, .btn {
+
     font-family: "xkcd";
+
     word-spacing: 2px;
+
     margin-bottom: 40px;
+
 }
 
 p {
+
     font-size: 16px;
+
 }
 
 #options {
+
     margin-top: 100px
+
 }
 
 .menu-btn {
+
     text-align: center;
+
 }
 
 .btn {
+
     text-align: center;
+
     margin: 0 auto;
 
 }
 
-.save-btn{
+.save-btn {
+
     width: 140px;
+
 }
 
-.reset-btn{
+.reset-btn {
+
     width: 200px;
+
 }
-.refresh-btn{
+
+.refresh-btn {
+
     width: 230px;
+
 }
 
 .ginp {
+
     margin-top: 10px;
+
 }
 
 .headings {
+
     text-align: center;
+
 }

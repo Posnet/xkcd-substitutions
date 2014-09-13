@@ -15,7 +15,6 @@ function saveOptions(e) {
     }
     replacements.push([org, rep]);
   };
-  console.log(replacements);
   chrome.storage.sync.set({
       "blacklist": blacklist,
       "replacements": replacements
@@ -24,7 +23,6 @@ function saveOptions(e) {
       makeClean()
     }
   );
-  chrome.storage.sync.get(null, function(res){console.log(res);})
 }
 
 function makeDirty() {
@@ -45,7 +43,6 @@ function populateSettings() {
   chrome.storage.sync.get(null, function(result) {
     $("#blacklist input").val(result["blacklist"].join(", "));
     var replacements = result['replacements'];
-    console.log(replacements.length);
     for (var i = 0; i < replacements.length; i++) {
       addbutt(null, replacements[i][0], replacements[i][1]);
     };

@@ -8,10 +8,12 @@
     "default_icon": {
       "19": "images/enabled.png"
     },
-    "default_title": "click to disable xkcd substitutions"      
+    "default_title": "click to disable xkcd substitutions"
   },
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": [
+      "js/background.js"
+    ],
     "persistent": false
   },
   "permissions": [
@@ -20,7 +22,7 @@
     "http://*/*",
     "https://*/*"
   ],
-   "icons": {
-      "128": "images/icon128.png"
-   }
+  "icons": {
+    "128": "images/icon128.png"
+  }
 }
