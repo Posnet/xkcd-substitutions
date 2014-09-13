@@ -9,14 +9,18 @@ src: url("../fonts/xkcd.otf") format("opentype");
     text-align: center;
     margin-bottom: 20px;
 }
-body, h1, h4, button {
+body, h1, h3, button, .btn {
     font-family: "xkcd";
     /*letter-spacing: 1px;*/
     word-spacing: 2px;
 }
 
 p {
-    font-size: 10px;
+    font-size: 16px;
+}
+
+#options {
+    margin-top: 100px
 }
 
 .menu-btn {
@@ -31,12 +35,17 @@ p {
 
 .save-btn{
     float: left;
-    /*margin-right: 100%;*/
+    /*margin-right: 35%;*/
 }
 .reset-btn{
     float: right;
     /*margin-left: auto;*/
 
+}
+
+.refresh-btn{
+    float: left;
+    margin-left: 35%;
 }
 
 .ginp {
