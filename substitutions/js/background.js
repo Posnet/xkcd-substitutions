@@ -42,11 +42,12 @@ function checkBlackList(url, blacklist){
     return true;
 }
 
-chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
-    status = chrome.storage.sync.get(null, function(result) {
+chrome.tabs.onUpdated.addListener(injectScript function(tabId, info, tab) {
+    chrome.storage.sync.get(null, function(result) {
         if (result["status"] === "enabled" && checkBlackList(tab.url, result['blacklist'])) {
             chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-                    if (request == "config" && result["replacements"]) {
+                    if (request === "config" && result["replacements"]) {
+                        console.log(sender, result["replacements"]);
                         sendResponse(result["replacements"]);
                     }
             });
@@ -77,6 +78,7 @@ chrome.runtime.onStartup.addListener(function() {
         }
     });
 });
+
 chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set({
         "status": "enabled",

@@ -3,40 +3,40 @@ var next = 1;
 
 function saveOptions(e) {
   e.preventDefault;
-  var blacklist = $("#website-blacklist").val().replace(/\s+/g, " ").split(",");
+  var blacklist = $("#website-blacklist").val().replace(/\s+/g, " ").toLowerCase().split(",");
   var replacements = [];
-  var value = function(e) {
-    return e.val();
-  }
-  var rep_inputs = $("#replacements").filter(":input").map(value);
-  console.log($("body").filter("#website-blacklist"));
-  makeClean();
+  var originals = $('#replacements [name="origin"]');
+  var replaces = $('#replacements [name="replace"]');
+  for (var i = ((Math.max(originals.length, replaces.length)) - 1); i >= 0; i--) {
+    var org = originals[i].value.toLowerCase()
+    var rep = replaces[i].value.toLowerCase()
+    if (org === "" && rep === "") {
+      continue;
+    }
+    replacements.push([org, rep]);
+  };
+  console.log(replacements);
+  chrome.storage.sync.set({
+      "blacklist": blacklist,
+      "replacements": replacements
+    },
+    function() {
+      makeClean()
+    }
+  );
+  chrome.storage.sync.get(null, function(res){console.log(res);})
 }
-
-// function restore_options() {
-//   // Use default value color = 'red' and likesColor = true.
-//   chrome.storage.sync.get({
-//     favoriteColor: 'red',
-//     likesColor: true
-//   }, function(items) {
-//     document.getElementById('color').value = items.favoriteColor;
-//     document.getElementById('like').checked = items.likesColor;
-//   });
-// }
-// document.addEventListener('DOMContentLoaded', restore_options);
-// document.getElementById('save').addEventListener('click',
-//   save_options);
 
 function makeDirty() {
-    $("#save").removeClass("btn-success").addClass("btn-warning").children("i").removeClass("fa-check").addClass("fa-save");
-    $("#save span").text(" Click to Save");
-    // saved = false;
+  $("#save").removeClass("btn-success").addClass("btn-warning").children("i").removeClass("fa-check").addClass("fa-save");
+  $("#save span").text(" Click to Save");
+  // saved = false;
 }
 
-function makeClean(){
-    $("#save").removeClass("btn-warning").addClass("btn-success").children("i").removeClass("fa-save").addClass("fa-check");
-    $("#save span").text("Saved");
-    // saved = true;  
+function makeClean() {
+  $("#save").removeClass("btn-warning").addClass("btn-success").children("i").removeClass("fa-save").addClass("fa-check");
+  $("#save span").text("Saved");
+  // saved = true;  
 }
 
 function populateSettings() {
@@ -64,10 +64,9 @@ function addbutt(e, original, replacement) {
   var removeBtn = '<span class="input-group-btn"> <button id="remove' + next + '"class="btn btn-danger remove-me" type="button"><i class="fa fa-remove"></i></button> </span>'
   var addBtn = '<span class="input-group-btn add-rep"><button class="btn btn-info add-more" type="button"><i class="fa fa-plus add-more-icon"></i></button></span>'
   next = next + 1;
-  var newIn = '<div id="field' + next + '" class="row ginp"><div class="col-xs-6"> <input autocomplete="off" placeholder="original" id="origin" type="text" class="input form-control" value="' + original + '"></div><div class="col-xs-6"><div class="input-group"><input autocomplete="off" placeholder="substitution" id="replace" type="text" class="input form-control"value="' + replacement + '"> </div>'
-  $("#replacements").prepend(newIn);
+  var newIn = '<div id="field' + next + '" class="row ginp"><div class="col-xs-6"> <input autocomplete="off" placeholder="original" name="origin" type="text" class="input form-control" value="' + original + '"></div><div class="col-xs-6"><div class="input-group"><input autocomplete="off" placeholder="substitution" name="replace" type="text" class="input form-control"value="' + replacement + '">' + addBtn + ' </div>'
   $(".add-rep").replaceWith(removeBtn)
-  $("#replace").after(addBtn);
+  $("#replacements").prepend(newIn);
   $(".add-more").on('click', addbutt);
   $('.remove-me').on('click', function(e) {
     e.preventDefault();
