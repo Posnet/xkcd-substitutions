@@ -31,63 +31,54 @@ var default_blacklisted_sites = ["docs.google.com",
     "outlook.com",
 ]
 
-function checkBlackList(url, blacklist){
+function checkBlackList(url, blacklist) {
     url = url.toLowerCase() || "";
     blacklist = blacklist || [];
     for (var i = blacklist.length - 1; i >= 0; i--) {
-        if (url.indexOf(blacklist[i]) > -1){
+        if (url.indexOf(blacklist[i]) > -1) {
             return false;
         }
     };
     return true;
 }
 
-chrome.tabs.onUpdated.addListener(injectScript function(tabId, info, tab) {
+function injectionScript(tabId, info, tab) {
+    console.log("injection fire");
     chrome.storage.sync.get(null, function(result) {
         if (result["status"] === "enabled" && checkBlackList(tab.url, result['blacklist'])) {
-            chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-                    if (request === "config" && result["replacements"]) {
-                        console.log(sender, result["replacements"]);
-                        sendResponse(result["replacements"]);
-                    }
-            });
             chrome.tabs.executeScript(tabId, {
                 file: "js/substitutions.js",
                 runAt: "document_end"
             });
         }
     });
-});
+}
 
-chrome.runtime.onStartup.addListener(function() {
+
+
+function fixDataCorruption() {
     chrome.storage.sync.get(null, function(result) {
-        if (result["status"] === null) {
+        if (!result["status"]) {
             chrome.storage.sync.set({
                 "status": "enabled"
             });
         }
-        if (result["replacements"] === null) {
+        if (!result["replacements"]) {
             chrome.storage.sync.set({
                 "replacements": default_replacements
             });
         }
-        if (result["replacements"] === null) {
+        if (!result["replacements"]) {
             chrome.storage.sync.set({
                 "blacklist": default_blacklisted_sites
             });
         }
     });
-});
+}
 
-chrome.runtime.onInstalled.addListener(function() {
-    chrome.storage.sync.set({
-        "status": "enabled",
-        "replacements": default_replacements,
-        "blacklist": default_blacklisted_sites
-    });
-});
-chrome.browserAction.onClicked.addListener(function() {
-    status = chrome.storage.sync.get("status", function(result) {
+function toggleActive() {
+    chrome.storage.sync.get("status", function(result) {
+        console.log("clickfire");
         if (result["status"] === null) {
             status = "enabled";
         } else {
@@ -116,4 +107,20 @@ chrome.browserAction.onClicked.addListener(function() {
             "status": status
         });
     });
+}
+
+
+
+chrome.browserAction.onClicked.addListener(toggleActive);
+chrome.runtime.onMessage.addListener(function addMessage(request, sender, sendResponse) {
+    console.log("message fire");
+    chrome.storage.sync.get(null, function(result) {
+        if (request === "config" && result["replacements"]) {
+            sendResponse(result["replacements"]);
+            console.log(sender, result["replacements"]);
+        }
+    });
 });
+chrome.tabs.onUpdated.addListener(injectionScript);
+chrome.runtime.onInstalled.addListener(fixDataCorruption);
+chrome.runtime.onStartup.addListener(fixDataCorruption);

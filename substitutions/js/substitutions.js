@@ -1,7 +1,8 @@
 // Tribute to  justin.giancola and the s/keyboard/leopard chrome extension.
 // Icon and idea are from www.xkcd.com/1288
+console.log("script injected");
 chrome.runtime.sendMessage("config", function(response) {
-    console.log(response)
+    console.log(response);
     "use strict";
     // taken from http://stackoverflow.com/questions/17264639/replace-text-but-keep-case
     function matchCase(text, pattern) {
