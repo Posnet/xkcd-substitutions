@@ -1,5 +1,5 @@
 //Default replacements
-var replacements = [
+var default_replacements = [
     ['keyboard', 'leopard'],
     ['keyboards', 'leopards'],
     ['force', 'horse'],
@@ -25,23 +25,27 @@ var replacements = [
     ['force', 'horse'],
 ];
 //Default Blacklist
-var blacklisted_sites = ["docs.google.com",
+var default_blacklisted_sites = ["docs.google.com",
     "gmail.com",
     "mail.gooogle.com",
     "mail.yahoo.com",
     "outlook.com"
 ]
 
-
 chrome.tabs.onUpdated.addListener(function(tabId, info) {
-        status = chrome.storage.sync.get(null, function(result) {
-            if (result["status"] === "enabled") {
-                chrome.tabs.executeScript(tabId, {
-                    file: "js/substitutions.js",
-                    runAt: "document_end"
-                });
-            }
-        });
+    status = chrome.storage.sync.get(null, function(result) {
+        if (result["status"] === "enabled") {
+            chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+                    if (request == "config" && result["replacements"]) {
+                        sendResponse(result["replacements"]);
+                    }
+            });
+            chrome.tabs.executeScript(tabId, {
+                file: "js/substitutions.js",
+                runAt: "document_end"
+            });
+        }
+    });
 });
 chrome.runtime.onStartup.addListener(function() {
     chrome.storage.sync.get("status", function(result) {
@@ -50,11 +54,23 @@ chrome.runtime.onStartup.addListener(function() {
                 "status": "enabled"
             });
         }
+        if (result["replacements"] === null) {
+            chrome.storage.sync.set({
+                "replacements": default_replacements
+            });
+        }
+        if (result["replacements"] === null) {
+            chrome.storage.sync.set({
+                "blacklist": default_blacklisted_sites
+            });
+        }
     });
 });
 chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set({
-        "status": "enabled"
+        "status": "enabled",
+        "replacements": default_replacements,
+        "blacklist": default_blacklisted_sites
     });
 });
 chrome.browserAction.onClicked.addListener(function() {
@@ -87,7 +103,4 @@ chrome.browserAction.onClicked.addListener(function() {
             "status": status
         });
     });
-});
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request == "config") sendResponse(replacements);
 });
