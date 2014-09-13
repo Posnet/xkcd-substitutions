@@ -21,42 +21,56 @@
         <div class="title">
             <h1>XKCD Substitutions</h1>
         </div>
-        <div>
-            <button id="save" class="btn btn-success save-btn">
-                <i class="fa fa-check"> </i> <span>Saved</span>
-            </button>
-            <button id="refresh" class="btn btn-info refresh-btn">
-                <i class="fa fa-refresh"> </i> Reload current settings
-            </button>
-            <button id="reset" class="btn btn-danger reset-btn">
-                <i class="fa fa-rotate-right"> </i> Reset to defaults
-            </button>
-        </div>
+        <ul class="nav nav-pills nav-justified">
+            <li>
+                <div class="menu-btn">
+                    <button id="save" class="btn btn-success save-btn">
+                        <i class="fa fa-check"></i>
+                        <span>Saved</span>
+                    </button>
+                </div>
+            </li>
+            <li>
+                <div class="menu-btn">
+                    <button id="refresh" class="btn btn-info refresh-btn">
+                        <i class="fa fa-refresh"> </i> Reload current settings
+                    </button>
+                </div>
+            </li>
+            <li>
+                <div class="menu-btn">
+                    <button id="reset" class="btn btn-danger reset-btn">
+                        <i class="fa fa-rotate-right"> </i> Reset to defaults
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
     </div>
     <div id="options">
-    <div>
-        <h3>Website Blacklist</h3>
-        <p>While this extension tries not to effect things like login forms or emails, due to the complex nature of websites this cannot be garanteed. So there is a way to stop this extension working on specific sites.</p>
-        <p>If a websites address/URL contains any of the following sites, this extension will ignore it.</p>
-        <p>Feel free to add your own to the list.</p>
-        <form id="blacklist">
-            <div>
-                <input autocomplete="off" placeholder="A comma separated list of websites" id="website-blacklist" type="text" type="text" class="input form-control field">
-            </div>
-        </form>
-    </div>
-    <div>
         <div>
-            <h3>Substitutions List</h3>
+            <h3>Website Blacklist</h3>
+            <p>While this extension tries not to effect things like login forms or emails, due to the complex nature of websites this cannot be garanteed. So there is a way to stop this extension working on specific sites.</p>
+            <p>If a websites address/URL contains any of the following sites, this extension will ignore it.</p>
+            <p>Feel free to add your own to the list.</p>
+            <form id="blacklist">
+                <div>
+                    <input autocomplete="off" placeholder="A comma separated list of websites" id="website-blacklist" type="text" type="text" class="input form-control field">
+                </div>
+            </form>
+        </div>
+        <div>
+            <div>
+                <h3>Substitutions List</h3>
                 <p>The original word will be replaced with the substituted word.</p>
                 <form id="replacements">
                     <div id="field1" class="row ginp first-row">
                         <div class="col-xs-6">
-                            <input autocomplete="off" placeholder="original" id="origin1" name="origin1" type="text" type="text" class="input form-control field">
+                            <input autocomplete="off" placeholder="original" id="origin" type="text" class="input form-control field">
                         </div>
                         <div class="col-xs-6">
                             <div class="input-group">
-                                <input autocomplete="off" id="replace1" placeholder="substitution" name="replace1" type="text" type="text" class="input form-control field">
+                                <input autocomplete="off" id="replace" placeholder="substitution" type="text" class="input form-control field">
                                 <span class="input-group-btn add-rep">
                                     <button class="btn btn-info add-more" type="button"><i class="fa fa-plus add-more-icon"></i>
                                     </button>
@@ -65,7 +79,7 @@
                         </div>
                     </div>
                 </form>
-        </div>
+            </div>
         </div>
     </div>
 </body>

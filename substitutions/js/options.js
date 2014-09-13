@@ -10,8 +10,8 @@ function save_options(e) {
   $("#save").removeClass("btn-warning").addClass("btn-success").children("i").removeClass("fa-save").addClass("fa-check");
   $("#save span").text("Saved");
 }
-// // Restores select box and checkbox state using the preferences
-// // stored in chrome.storage.
+
+
 // function restore_options() {
 //   // Use default value color = 'red' and likesColor = true.
 //   chrome.storage.sync.get({
@@ -26,16 +26,20 @@ function save_options(e) {
 // document.getElementById('save').addEventListener('click',
 //   save_options);
 
-var addbutt = (function(e) {
+var addbutt = (function() {
   var next = 1;
-  return function(e) {
-    e.preventDefault();
+  return function(e, original, replacement) {
+    original = original || "";
+    replacement = replacement || "";
+    if(e){
+      e.preventDefault();
+    } 
     var addto = "#field" + next;
-    var addBtn = '<span class="input-group-btn"> <button id="remove' + next + '" class="btn btn-danger remove-me" type="button"><i class="fa fa-remove"></i></button> </span>'
+    var removeBtn = '<span class="input-group-btn"> <button id="remove' + next + '"class="btn btn-danger remove-me" type="button"><i class="fa fa-remove"></i></button> </span>'
     next = next + 1;
-    var newIn = '<div id="field' + next + '" class="row">' + '<div class="col-xs-6 ginp"> <input autocomplete="off" placeholder="original" id="origin' + next + '" name="origin' + next + '" type="text" class="input form-control">' + '</div><div class="col-xs-6 ginp"><div class="input-group">' + '<input autocomplete="off" placeholder="substitution" id="replace' + next + '" name="replace' + next + '" type="text" class="input form-control"> </div>'
+    var newIn = '<div id="field' + next + '" class="row"><div class="col-xs-6 ginp"> <input autocomplete="off" placeholder="original" id="origin" type="text" class="input form-control" value="' + original + '"></div><div class="col-xs-6 ginp"><div class="input-group"><input autocomplete="off" placeholder="substitution" id="replace" type="text" class="input form-control"value="' + replacement + '"> </div>'
     $(addto).before(newIn);
-    $(("#replace" + next)).after($(".add-rep").replaceWith(addBtn));
+    $("#replace").after($(".add-rep").replaceWith(removeBtn));
     $(".add-more").on('click', addbutt);
     $('.remove-me').on('click', function(e) {
       e.preventDefault();
@@ -45,6 +49,19 @@ var addbutt = (function(e) {
     });
   }
 })();
+
+function populateSettings() {
+  chrome.storage.sync.get("status", function(result) {
+        if (result["replacements"] === null) {
+            chrome.storage.sync.set({
+                "status": "enabled"
+            });
+        }
+    });
+  addbutt();
+}
+
+
 $(document).ready(function() {
   $(".add-more").on('click', addbutt);
 
@@ -59,7 +76,7 @@ $(document).ready(function() {
 
   $("#options").change(function(e){
     $("#save").removeClass("btn-success").addClass("btn-warning").children("i").removeClass("fa-check").addClass("fa-save");
-    $("#save span").text("Save");
+    $("#save span").text(" Save  ");
   })
 
   $("#replacements").keypress(function(e) {
@@ -69,4 +86,5 @@ $(document).ready(function() {
       $(this).find('input')[0].focus();
     }
   })
+  populateSettings();
 });
