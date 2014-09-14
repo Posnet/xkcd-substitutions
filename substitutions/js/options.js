@@ -102,7 +102,7 @@ $(document).ready(function() {
     }
   });
 
-  $("#options").change(makeDirty);
+  $("#options").on('input', makeDirty);
 
   $("#replacements").keypress(function(e) {
     if (e.which == 13) {
