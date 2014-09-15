@@ -15,7 +15,8 @@ function makeClean() {
 
 function saveOptions(e) {
   e.preventDefault;
-  var blacklist = $("#website-blacklist").val().replace(/\s+/g, " ").toLowerCase().split(",");
+  console.log("ping");
+  var blacklist = $("#website-blacklist").val().replace(/\s+/g, "").toLowerCase().split(",");
   var replacements = [];
   var originals = $('#replacements [name="origin"]');
   var replaces = $('#replacements [name="replace"]');
@@ -102,7 +103,7 @@ $(document).ready(function() {
     }
   });
 
-  $("#options").on('input', makeDirty);
+  $("#options").on('input', saveOptions);
 
   $("#replacements").keypress(function(e) {
     if (e.which == 13) {
