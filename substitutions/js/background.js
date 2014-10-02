@@ -23,6 +23,7 @@ var default_replacements = [
     ['homeland security', 'homestar runner'],
     ['could not be reached for comment', 'is guilty and everyone knows it'],
     ['batman', 'a man dressed like a bat'],
+    ['hello', 'fwahahahahaha'],
 ];
 //Default Blacklist
 var default_blacklisted_sites = ["docs.google.com",
