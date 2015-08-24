@@ -37,7 +37,7 @@ chrome.runtime.sendMessage("config", function(response) {
                 "FORM": 0,
                 "TEXTAREA": 0
             };
-            if (node.tagName in ignore) {
+            if (node.parentElement.tagName in ignore) {
                 return;
             }
             for (i = replacementsObject.length - 1; i >= 0; i--) {
