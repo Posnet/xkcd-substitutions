@@ -1,11 +1,8 @@
 //Default replacements
 var default_replacements = [
-    ['keyboard', 'leopard'],
-    ['keyboards', 'leopards'],
-    ['force', 'horse'],
-    ['forces', 'horses'],
-    ['witness', 'this dude I know'],
+    //https://xkcd.com/1288/
     ['witnesses', 'these dudes I know'],
+    ['witness', 'this dude I know'],
     ['allegedly', 'kinda probably'],
     ['new study', 'tumblr post'],
     ['rebuild', 'avenge'],
@@ -22,15 +19,47 @@ var default_replacements = [
     ['congressional leaders', 'river spirits'],
     ['homeland security', 'homestar runner'],
     ['could not be reached for comment', 'is guilty and everyone knows it'],
-    ['batman', 'a man dressed like a bat'],
+    //https://xkcd.com/1625/
+    ['debate', 'dance-off'],
+    ['self driving', 'uncontrollably swerving'],
+    ['poll', 'psychic reading'],
+    ['candidate', 'airbender'],
+    ['drone', 'dog'],
+    ['vows to', 'probably won\'t'],
+    ['at large', 'very large'],
+    ['successfully', 'suddenly'],
+    ['expands', 'physically expands'],
+    ['expand', 'physically expand'],
+    ['first-degree', 'friggin\' awful'],
+    ['second-degree', 'friggin\' awful'],
+    ['third-degree', 'friggin\' awful'],
+    ['an unknown number', 'like hundreds'],
+    ['front runner', 'blade runner'],
+    ['global', 'spherical'],
+    ['years', 'minutes'],
+    ['minutes', 'years'],
+    ['no indication', 'lots of signs'],
+    ['urged restraint by', 'drunkenly egged on'],
+    ['horsepower', 'tons of horsemeat'],
+    //https://xkcd.com/1031/
+    ['keyboard', 'leopard'],
+    ['keyboards', 'leopards'],
+    //https://xkcd.com/1418/
+    ['force', 'horse'],
+    ['forces', 'horses'],
+    //https://xkcd.com/1004/
+    ['batman', 'a man dressed like a bat']
 ];
 //Default Blacklist
-var default_blacklisted_sites = ["docs.google.com",
+var default_blacklisted_sites = [
+    "docs.google.com",
     "gmail.com",
     "mail.google.com",
+    "inbox.google.com",
     "mail.yahoo.com",
     "outlook.com",
-]
+    "xkcd.com"
+];
 
 debug = false;
 
@@ -41,13 +70,13 @@ function checkBlackList(url, blacklist) {
         if (url.indexOf(blacklist[i]) > -1) {
             return false;
         }
-    };
+    }
     return true;
 }
 
 function injectionScript(tabId, info, tab) {
     if (debug) console.log("injection fire");
-    chrome.storage.sync.get(null, function(result) {
+    chrome.storage.sync.get(null, function (result) {
         if (result["status"] === "enabled" && checkBlackList(tab.url, result['blacklist'])) {
             chrome.tabs.executeScript(tabId, {
                 file: "js/substitutions.js",
@@ -59,7 +88,7 @@ function injectionScript(tabId, info, tab) {
 
 function addMessage(request, sender, sendResponse) {
     if (debug) console.log("message fire");
-    chrome.storage.sync.get(null, function(result) {
+    chrome.storage.sync.get(null, function (result) {
         if (request === "config" && result["replacements"]) {
             sendResponse(result["replacements"]);
         }
@@ -69,7 +98,7 @@ function addMessage(request, sender, sendResponse) {
 
 function fixDataCorruption() {
     if (debug) console.log("updateStore");
-    chrome.storage.sync.get(null, function(result) {
+    chrome.storage.sync.get(null, function (result) {
         if (!result["status"]) {
             chrome.storage.sync.set({
                 "status": "enabled"
@@ -90,7 +119,7 @@ function fixDataCorruption() {
 
 function toggleActive() {
     if (debug) console.log("clickfire");
-    chrome.storage.sync.get("status", function(result) {
+    chrome.storage.sync.get("status", function (result) {
         if (result["status"] === null) {
             status = "enabled";
         } else {
