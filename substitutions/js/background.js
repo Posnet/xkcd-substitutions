@@ -23,7 +23,35 @@ var default_replacements = [
     ['homeland security', 'homestar runner'],
     ['could not be reached for comment', 'is guilty and everyone knows it'],
     ['batman', 'a man dressed like a bat'],
+
+    // http://xkcd.com/1625/
+    ['debate', 'dance-off'],
+    ['self driving', 'uncontrollably swerving'],
+    ['self-driving', 'uncontrollably swerving'],
+    ['selfdriving', 'uncontrollably swerving'], 
+    ['poll', 'psychic reading'],
+    ['candidate', 'airbender'],
+    ['drone', 'dog'],
+    ['vows to', 'probably won't],
+    ['at large', 'very large'],
+    ['successfully', 'suddenly'],
+    ['expands', 'physically expands'],
+    ['first-degree', 'friggin awful'],
+    ['first degree', 'friggin awful'],
+    ['second-degree', 'somewhat awful'],
+    ['second degree', 'somewhat awful'],
+    ['third-degree', 'awful but not so awful'],
+    ['third degree', 'awful but not so awful'],
+    ['an unknown number', 'like hundreds'],
+    ['front runner', 'blade runner'],
+    ['global', 'spherical'],
+    ['years', 'minutes'],
+    ['minutes', 'years'],
+    ['no indication', 'lots of signs'],
+    ['urged restraint by', 'drunkenly egged on'],
+    ['horsepower', 'tons of horsemeat']
 ];
+
 //Default Blacklist
 var default_blacklisted_sites = ["docs.google.com",
     "gmail.com",
