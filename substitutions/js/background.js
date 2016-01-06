@@ -23,6 +23,27 @@ var default_replacements = [
     ['homeland security', 'homestar runner'],
     ['could not be reached for comment', 'is guilty and everyone knows it'],
     ['batman', 'a man dressed like a bat'],
+    ['debate', 'dance-off'],
+    ['self driving', 'uncontrollably swerving'],
+    ['poll', 'psychic reading'],
+    ['candidate', 'airbender'],
+    ['drone', 'dog'],
+    ['vows to',	"Probably won't"],
+    ["at large", "very large"],
+    ["successfully", "suddenly"],
+    ["expands", "physically expands"],
+    ["first-degree", "friggin' awful"],
+    ["second-degree", "friggin' awful"],
+    ["third-degree", "friggin' awful"],
+    ["an unknown number", "like hundreds"],
+    ["front runner", "blade runner"],
+    ["global", "spherical"],
+    ["years", "minutes"],
+    ["minutes",	"years"],
+    ["no indication", "lots of signs"],
+    ["urged restraint by", "drunkenly egged on"],
+    ["horsepower", "tons of horsemeat"]
+
 ];
 //Default Blacklist
 var default_blacklisted_sites = ["docs.google.com",
