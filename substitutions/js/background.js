@@ -80,7 +80,7 @@ function fixDataCorruption() {
                 "replacements": default_replacements
             });
         }
-        if (!result["replacements"]) {
+        if (!result["blacklist"]) {
             chrome.storage.sync.set({
                 "blacklist": default_blacklisted_sites
             });
