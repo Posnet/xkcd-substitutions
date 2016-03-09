@@ -26,7 +26,7 @@ var default_replacements = [
     ['debate', 'dance-off'],
     ['self driving', 'uncontrollably swerving'],
     ['poll', 'psychic reading'],
-    ['canidate', 'airbender'],
+    ['candidate', 'airbender'],
     ['drone', 'dog'],
     ['vows to', 'probably won\'t'],
     ['at large', 'very large'],
