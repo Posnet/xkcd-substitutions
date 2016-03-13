@@ -80,7 +80,7 @@ var default_blacklisted_sites = [
   "xkcd.com"
 ];
 
-debug = false;
+var debug = false;
 
 function checkBlackList(url, blacklist) {
   url = url.toLowerCase() || "";
@@ -94,19 +94,23 @@ function checkBlackList(url, blacklist) {
 }
 
 function injectionScript(tabId, info, tab) {
-  if (debug) console.log("injection fire");
-  chrome.storage.sync.get(null, function(result) {
-    if (result["status"] === "enabled" && checkBlackList(tab.url, result['blacklist'])) {
+  if (debug) {console.log("injection fire");}
+  chrome.storage.sync.get(null, function (result) {
+    if (result
+        && result["status"] === "enabled"
+        && checkBlackList(tab.url, result['blacklist'])) {
       chrome.tabs.executeScript(tabId, {
         file: "js/substitutions.js",
         runAt: "document_end"
+      }, function (){
+        if (debug){console.log('Script Executed');}
       });
     }
   });
 }
 
 function addMessage(request, sender, sendResponse) {
-  if (debug) console.log("message fire");
+  if (debug) { console.log("message fire"); }
   chrome.storage.sync.get(null, function(result) {
     if (request === "config" && result["replacements"]) {
       sendResponse(result["replacements"]);
@@ -116,7 +120,7 @@ function addMessage(request, sender, sendResponse) {
 }
 
 function fixDataCorruption() {
-  if (debug) console.log("updateStore");
+  if (debug) { console.log("updateStore"); }
   chrome.storage.sync.get(null, function(result) {
     if (!result["status"]) {
       chrome.storage.sync.set({
@@ -137,7 +141,7 @@ function fixDataCorruption() {
 }
 
 function toggleActive() {
-  if (debug) console.log("clickfire");
+  if (debug) { console.log("clickfire"); }
   chrome.storage.sync.get("status", function(result) {
     if (result["status"] === null) {
       status = "enabled";
