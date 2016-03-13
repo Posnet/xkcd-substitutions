@@ -4,7 +4,8 @@ xkcd-substitutions
 xkcd substitutions chrome extension
 
 All credit to XKCD.  
-see http://xkcd.com/1288
+https://xkcd.com/1288/
+https://xkcd.com/1625/
 
 some other xkcd jokes have made it into the newest version.
 https://xkcd.com/1004/
