@@ -52,6 +52,5 @@ chrome.runtime.sendMessage("config", function(response) {
   var iter = document.createNodeIterator(document.body, NodeFilter.SHOW_TEXT);
   while ((node = iter.nextNode())) {
     substitute(node);
-    console.log('substituted');
   }
 });
