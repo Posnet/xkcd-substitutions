@@ -87,7 +87,7 @@ var default_replacements = [
   ['disrupt', 'destroy'],
   ['meeting', 'm\u00E9nage \u00E0 trois'],
   ['scientist', 'Channing Tatum and his friends'],
-  ['you won't believe, 'I'm really sad about],
+  ['you won't believe', 'I'm really sad about'],
 
   //https://xkcd.com/1031/
   ['keyboard', 'leopard'],
