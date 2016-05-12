@@ -86,7 +86,8 @@ var default_replacements = [
   ['latest', 'final'],
   ['disrupt', 'destroy'],
   ['meeting', 'm\u00E9nage \u00E0 trois'],
-  ['scientist', 'Channing Tatum and his friends'],
+  ['scientists', 'Channing Tatum and his friends'],
+  ['scientist', 'Channing Tatum\'s friend'],
   ['you won\'t believe', 'I\'m really sad about'],
 
   //https://xkcd.com/1031/
