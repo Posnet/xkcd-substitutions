@@ -16,6 +16,9 @@
     ],
     "persistent": false
   },
+  "web_accessible_resources": [
+    "fonts/xkcd.otf"
+  ],
   "permissions": [
     "tabs",
     "storage",
