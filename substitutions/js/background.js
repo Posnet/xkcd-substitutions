@@ -87,6 +87,7 @@ function checkBlackList(url, blacklist) {
   blacklist = blacklist || [];
   for (var i = blacklist.length - 1; i >= 0; i--) {
     if (url.indexOf(blacklist[i]) > -1) {
+      setBrowserAction("blacklist");
       return false;
     }
   }
@@ -119,13 +120,16 @@ function addMessage(request, sender, sendResponse) {
   return true;
 }
 
-function fixDataCorruption() {
+function setup() {
   if (debug) { console.log("updateStore"); }
   chrome.storage.sync.get(null, function(result) {
     if (!result["status"]) {
       chrome.storage.sync.set({
         "status": "enabled"
       });
+      setBrowserAction("enabled");
+    } else {
+      setBrowserAction(result["status"]);
     }
     if (!result["replacements"]) {
       chrome.storage.sync.set({
@@ -143,38 +147,47 @@ function fixDataCorruption() {
 function toggleActive() {
   if (debug) { console.log("clickfire"); }
   chrome.storage.sync.get("status", function(result) {
-    if (result["status"] === null) {
-      status = "enabled";
-    } else {
-      status = result["status"];
-    }
-    if (status === "enabled") {
-      icon = {
-        "path": "images/disabled.png"
-      };
-      message = {
-        "title": "click to enable xkcd substitutions"
-      };
+    if (result["status"] === "enabled") {
       status = "disabled";
-    } else if (status === "disabled") {
-      icon = {
-        "path": "images/enabled.png"
-      };
-      message = {
-        "title": "click to disabled xkcd substitutions"
-      };
+    } else {
       status = "enabled";
     }
-    chrome.browserAction.setIcon(icon);
-    chrome.browserAction.setTitle(message);
+    setBrowserAction(status);
     chrome.storage.sync.set({
       "status": status
     });
   });
 }
 
+function setBrowserAction(status) {
+  if (status === "disabled") {
+    icon = {
+      "path": "images/disabled.png"
+    };
+    message = {
+      "title": "click to enable xkcd substitutions"
+    };
+  } else if (status === "blacklist") {
+    icon = {
+      "path": "images/blacklist.png"
+    };
+    message = {
+      "title": "site is blacklisted for xkcd substitutions"
+    };
+  } else {
+    icon = {
+      "path": "images/enabled.png"
+    };
+    message = {
+      "title": "click to disable xkcd substitutions"
+    };
+  }
+  chrome.browserAction.setIcon(icon);
+  chrome.browserAction.setTitle(message);
+}
+
 chrome.browserAction.onClicked.addListener(toggleActive);
 chrome.runtime.onMessage.addListener(addMessage);
 chrome.tabs.onUpdated.addListener(injectionScript);
-chrome.runtime.onInstalled.addListener(fixDataCorruption);
-chrome.runtime.onStartup.addListener(fixDataCorruption);
+chrome.runtime.onInstalled.addListener(setup);
+chrome.runtime.onStartup.addListener(setup);
