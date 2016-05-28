@@ -79,6 +79,7 @@ var default_blacklisted_sites = [
   "outlook.com",
   "xkcd.com"
 ];
+var default_use_font = true;
 
 var debug = false;
 
@@ -111,12 +112,23 @@ function injectionScript(tabId, info, tab) {
 
 function addMessage(request, sender, sendResponse) {
   if (debug) { console.log("message fire"); }
-  chrome.storage.sync.get(null, function(result) {
-    if (request === "config" && result["replacements"]) {
-      sendResponse(result["replacements"]);
-    }
-  });
-  return true;
+  if (request === "config") {
+    chrome.storage.sync.get(null, function(result) {
+      if (result["replacements"]) {
+        sendResponse({"replacements": result["replacements"],
+                      "useFont": result["useFont"],
+                      "fontUrl": chrome.extension.getURL("fonts/xkcd.otf")});
+      }
+    });
+    return true;
+  }
+  if ("substCount" in request) {
+    var badgeText = {"tabId": sender.tab.id};
+    badgeText.text = request.substCount ? request.substCount.toString() : "";
+    chrome.browserAction.setBadgeText(badgeText);
+    console.log('Made ' + request.substCount + ' changes to "' +
+                sender.tab.title + '" <' + sender.url + '>');
+  }
 }
 
 function fixDataCorruption() {
@@ -135,6 +147,11 @@ function fixDataCorruption() {
     if (!result["blacklist"]) {
       chrome.storage.sync.set({
         "blacklist": default_blacklisted_sites
+      });
+    }
+    if (!result["useFont"]) {
+      chrome.storage.sync.set({
+        "useFont": default_use_font
       });
     }
   });
