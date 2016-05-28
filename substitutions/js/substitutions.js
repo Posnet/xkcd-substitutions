@@ -66,6 +66,7 @@ chrome.runtime.sendMessage("config", function(response) {
   // Set up the functions we'll need to perform the iteration.
   var node;
   var iter;
+  var substCount = 0;
 
   var filter = {
       acceptNode: function(node) {
@@ -86,7 +87,9 @@ chrome.runtime.sendMessage("config", function(response) {
                   // other extension or the page's own scripts may
                   // have made more changes to what we did, so don't
                   // fight back and forth, constantly changing the
-                  // DOM.  Instead, just skip this subtree entirely.
+                  // DOM.  Instead, just increment our substitution
+                  // count and skip this subtree entirely.
+                  substCount++;
                   return NodeFilter.FILTER_REJECT;
               }
           }
@@ -120,6 +123,7 @@ chrome.runtime.sendMessage("config", function(response) {
       var newNode;
       if (splitStringLower in replacementsMap) {
         // This is something that needs to be changed.
+        substCount++;
         newNode = document.createElement("span");
         newNode.setAttribute("class", "xkcdSubstitutionsExtensionSubbed");
         newNode.setAttribute("title", splitString);
@@ -147,4 +151,6 @@ chrome.runtime.sendMessage("config", function(response) {
   while ((node = iter.nextNode())) {
     substitute(node);
   }
+
+  chrome.runtime.sendMessage({"substCount": substCount});
 });
