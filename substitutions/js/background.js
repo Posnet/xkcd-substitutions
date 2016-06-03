@@ -67,7 +67,10 @@ var default_replacements = [
   ['forces', 'horses'],
 
   //https://xkcd.com/1004/
-  ['batman', 'a man dressed like a bat']
+  ['batman', 'a man dressed like a bat'],
+  
+  //https://xkcd.com/1689/
+  ['my cat', 'my friend Catherine']
 ];
 //Default Blacklist
 var default_blacklisted_sites = [
