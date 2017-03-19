@@ -36,6 +36,7 @@ chrome.runtime.sendMessage("config", function(response) {
       '}' +
       '.xkcdSubstitutionsExtensionSubbed {' +
       '  font-family: xkcdSubstitutionsFont !important;' +
+      '  font-variant: small-caps;' +
       '}';
     document.head.appendChild(stylesheet);
   }
