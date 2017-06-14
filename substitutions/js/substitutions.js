@@ -3,19 +3,70 @@
 chrome.runtime.sendMessage("config", function(response) {
   "use strict";
 
-  // Taken from http://stackoverflow.com/questions/17264639/replace-text-but-keep-case
-  function matchCase(text, pattern) {
-    var result = '';
-    for (var i = 0; i < text.length; i++) {
-      var c = text.charAt(i);
-      var p = pattern.charCodeAt(i);
-      if (p >= 65 && p < 65 + 26) {
-        result += c.toUpperCase();
+  function matchCase(replacement, original) {
+    var isTitlePosition = true;
+    for (var i = 0; i < original.length; i++) {
+      var origChar = original[i];
+      var lowerChar = lowerOriginal[i];
+      var upperChar = upperOriginal[i];
+      var titleChar = isTitlePosition ? upperChar : lowerChar;
+      if (origChar !== lowerChar) {
+        hammingLower++;
+      }
+      if (origChar !== upperChar) {
+        hammingUpper++;
+      }
+      if (origChar !== titleChar) {
+        hammingTitle++;
+      }
+      // This is a heuristic to determine whether or not we're looking
+      // at a punctuation character.  Essentially, this is just
+      // checking to see if it’s a non-letter.  It doesn’t work
+      // entirely correctly, such as in non-unicameral scripts, but
+      // it’s good enough for the purpose at hand.
+      isTitlePosition = (upperChar === lowerChar);
+    }
+    // Determine which case best approximates the original.
+    if (hammingLower <= hammingTitle && hammingLower <= hammingUpper) {
+      // The original is mostly in lowercase.
+      // We expect that the replacement string is also generally in
+      // lowercase, with things like proper names already capitalized
+      // for us.
+      if (original[0] === upperOriginal[0]) {
+        // The original’s first character is capitalized, but it’s
+        // mostly in lower case.  We're probably starting a sentence
+        // or something.
+        return (replacement[0].toLocaleUpperCase() +
+                replacement.substr(1));
       } else {
-        result += c.toLowerCase();
+        return replacement;
       }
     }
-    return result;
+    if (hammingUpper <= hammingLower && hammingUpper <= hammingTitle) {
+      // The original is mostly in uppercase.
+      return replacement.toLocaleUpperCase();
+    }
+
+    // The original is mostly in titlecase.  Build a result in title
+    // case.  Note that this path also is taken if there’s a one-word
+    // original that starts a sentence; we can’t tell the difference
+    // between that and a title, so we just assume it’s a title and
+    // move on.  (Multi-word originals are distinguished when computing
+    // the Hamming distance by looking at subsequent words.)
+    var resultArray = new Array(replacement.length);
+    var replacementLower = replacement.toLocaleLowerCase();
+    var replacementUpper = replacement.toLocaleUpperCase();
+    isTitlePosition = true;
+    for (i = 0; i < replacement.length; i++) {
+      var charAtPos = replacement[i];
+      if (isTitlePosition) {
+        resultArray.push(replacementUpper[i]);
+      } else {
+        resultArray.push(charAtPos);
+      }
+      isTitlePosition = (replacementLower[i] === replacementUpper[i]);
+    }
+    return resultArray.join('');
   }
 
   // Taken from Google's Closure library, goog.string.regExpEscape
@@ -36,7 +87,6 @@ chrome.runtime.sendMessage("config", function(response) {
       '}' +
       '.xkcdSubstitutionsExtensionSubbed {' +
       '  font-family: xkcdSubstitutionsFont !important;' +
-      '  font-variant: small-caps;' +
       '}';
     document.head.appendChild(stylesheet);
   }
@@ -67,6 +117,7 @@ chrome.runtime.sendMessage("config", function(response) {
   // Set up the functions we'll need to perform the iteration.
   var node;
   var iter;
+  var substCount = 0;
 
   var filter = {
       acceptNode: function(node) {
@@ -87,7 +138,9 @@ chrome.runtime.sendMessage("config", function(response) {
                   // other extension or the page's own scripts may
                   // have made more changes to what we did, so don't
                   // fight back and forth, constantly changing the
-                  // DOM.  Instead, just skip this subtree entirely.
+                  // DOM.  Instead, just increment our substitution
+                  // count and skip this subtree entirely.
+                  substCount++;
                   return NodeFilter.FILTER_REJECT;
               }
           }
@@ -121,6 +174,7 @@ chrome.runtime.sendMessage("config", function(response) {
       var newNode;
       if (splitStringLower in replacementsMap) {
         // This is something that needs to be changed.
+        substCount++;
         newNode = document.createElement("span");
         newNode.setAttribute("class", "xkcdSubstitutionsExtensionSubbed");
         newNode.setAttribute("title", splitString);
@@ -141,11 +195,13 @@ chrome.runtime.sendMessage("config", function(response) {
     node.parentNode.replaceChild(docFrag, node);
   }
 
-  iter = document.createTreeWalker(document.body, 
+  iter = document.createTreeWalker(document.body,
                                    NodeFilter.SHOW_ELEMENT |
                                    NodeFilter.SHOW_TEXT,
                                    filter);
   while ((node = iter.nextNode())) {
     substitute(node);
   }
+
+  chrome.runtime.sendMessage({"substCount": substCount});
 });
