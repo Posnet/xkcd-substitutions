@@ -16,6 +16,7 @@ function makeClean() {
 function saveOptions(e) {
   e.preventDefault;
   console.log("ping");
+  var useFont = $("#use-font").prop("checked");
   var blacklist = $("#website-blacklist").val().replace(/\s+/g, "").toLowerCase().split(",");
   var replacements = [];
   var originals = $('#replacements [name="origin"]');
@@ -30,7 +31,8 @@ function saveOptions(e) {
   };
   chrome.storage.sync.set({
       "blacklist": blacklist,
-      "replacements": replacements
+      "replacements": replacements,
+      "useFont": useFont
     },
     function() {
       makeClean();
@@ -41,7 +43,8 @@ function saveOptions(e) {
 function reset(){
     chrome.storage.sync.set({
       "blacklist": default_blacklisted_sites,
-      "replacements": default_replacements
+      "replacements": default_replacements,
+      "useFont": default_use_font
     },
     function() {
       makeClean();
@@ -53,7 +56,9 @@ function reset(){
 function populateSettings() {
   $("#replacements").empty();
   $("blacklist input").val("");
+  $("#use-font").prop("checked", false);
   chrome.storage.sync.get(null, function(result) {
+    $("#use-font").prop("checked", result["useFont"]);
     $("#blacklist input").val(result["blacklist"].join(", "));
     var replacements = result['replacements'];
     for (var i = 0; i < replacements.length; i++) {
@@ -94,7 +99,9 @@ $(document).ready(function() {
 
   $("#refresh").on('click', populateSettings);
 
-  $("#reset").on('click', reset)
+  $("#reset").on('click', reset);
+
+  $("#use-font").on('click', makeDirty);
 
   $("#blacklist").keypress(function(e) {
     if (e.which == 13) {

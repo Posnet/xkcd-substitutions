@@ -58,6 +58,40 @@ var default_replacements = [
   ['urged restraint by', 'drunkenly egged on'],
   ['horsepower', 'tons of horsemeat'],
 
+  // https://xkcd.com/1679/
+  ['gaffe', 'magic spell'],
+  ['gaffes', 'magic spells'],
+  ['ancient', 'haunted'],
+  ['star-studded', 'blood-soaked'],
+  ['remains to be seen', 'will never be known'],
+  ['silver bullet', 'way to kill werewolves'],
+  ['silver bullets', 'ways to kill werewolves'],
+  ['subway system', 'tunnels I found'],
+  ['subway systems', 'tunnels I found'],
+  ['surprising', 'surprising (but not to me)'],
+  ['war of words', 'interplanetary war'],
+  ['wars of words', 'interplanetary wars'],
+  ['tension', 'sexual tension'],
+  ['tensions', 'sexual tensions'],
+  ['cautiously optimistic', 'delusional'],
+  ['doctor who', 'the big bang theory'],
+  ['win votes', 'find pok\u00E9mon'],
+  ['behind the headlines', 'beyond the grave'],
+  ['email', 'poem'],
+  ['emails', 'poems'],
+  ['facebook post', 'poem'],
+  ['facebook posts', 'poems'],
+  ['tweet', 'poem'],
+  ['tweets', 'poems'],
+  ['facebook ceo', 'this guy'],
+  ['latest', 'final'],
+  ['disrupt', 'destroy'],
+  ['meeting', 'm\u00E9nage \u00E0 trois'],
+  ['meetings', 'm\u00E9nages \u00E0 trois'],
+  ['scientists', 'Channing Tatum and his friends'],
+  ['scientist', 'Channing Tatum'],
+  ['you won\'t believe', 'I\'m really sad about'],
+  
   //https://xkcd.com/1031/
   ['keyboard', 'leopard'],
   ['keyboards', 'leopards'],
@@ -65,9 +99,20 @@ var default_replacements = [
   //https://xkcd.com/1418/
   ['force', 'horse'],
   ['forces', 'horses'],
+  ['forcing', 'horsing'],
 
   //https://xkcd.com/1004/
-  ['batman', 'a man dressed like a bat']
+  ['batman', 'a man dressed like a bat'],
+  
+  //https://xkcd.com/1689/
+  ['my cat', 'my friend Catherine'],
+  ['his cat', 'his friend Catherine'],
+  ['her cat', 'her friend Catherine'],
+  ['their cat', 'their friend Catherine'],
+  ['your cat', 'your friend Catherine'],
+  
+  //https://xkcd.com/1704/
+  ['no man', 'Gnome Ann']
 ];
 //Default Blacklist
 var default_blacklisted_sites = [
@@ -77,8 +122,10 @@ var default_blacklisted_sites = [
   "inbox.google.com",
   "mail.yahoo.com",
   "outlook.com",
-  "xkcd.com"
+  "xkcd.com",
+  "github.com"
 ];
+var default_use_font = true;
 
 var debug = false;
 
@@ -113,7 +160,9 @@ function addMessage(request, sender, sendResponse) {
   if (debug) { console.log("message fire"); }
   chrome.storage.sync.get(null, function(result) {
     if (request === "config" && result["replacements"]) {
-      sendResponse(result["replacements"]);
+      sendResponse({"replacements": result["replacements"],
+                    "useFont": result["useFont"],
+                    "fontUrl": chrome.extension.getURL("fonts/xkcd.otf")});
     }
   });
   return true;
@@ -135,6 +184,11 @@ function fixDataCorruption() {
     if (!result["blacklist"]) {
       chrome.storage.sync.set({
         "blacklist": default_blacklisted_sites
+      });
+    }
+    if (!result["useFont"]) {
+      chrome.storage.sync.set({
+        "useFont": default_use_font
       });
     }
   });
