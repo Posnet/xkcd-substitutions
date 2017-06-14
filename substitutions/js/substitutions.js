@@ -36,6 +36,7 @@ chrome.runtime.sendMessage("config", function(response) {
       '}' +
       '.xkcdSubstitutionsExtensionSubbed {' +
       '  font-family: xkcdSubstitutionsFont !important;' +
+      '  font-variant: small-caps;' +
       '}';
     document.head.appendChild(stylesheet);
   }
@@ -70,12 +71,12 @@ chrome.runtime.sendMessage("config", function(response) {
 
   var filter = {
       acceptNode: function(node) {
-          if (node.nodeType == Node.TEXT_NODE) {
+          if (node.nodeType === Node.TEXT_NODE) {
               // This is a text node that we should show to the
               // filter.
               return NodeFilter.FILTER_ACCEPT;
           }
-          if (node.nodeType == Node.ELEMENT_NODE) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
               // Fold to upper case before checking the tag name,
               // since this may be XHTML etc.
               if (node.tagName.toUpperCase() in ignore) {
