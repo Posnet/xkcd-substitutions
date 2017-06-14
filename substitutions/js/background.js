@@ -99,6 +99,7 @@ var default_replacements = [
   //https://xkcd.com/1418/
   ['force', 'horse'],
   ['forces', 'horses'],
+  ['forcing', 'horseing'],
 
   //https://xkcd.com/1004/
   ['batman', 'a man dressed like a bat'],
