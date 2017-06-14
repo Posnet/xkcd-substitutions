@@ -80,7 +80,8 @@ var default_blacklisted_sites = [
   "inbox.google.com",
   "mail.yahoo.com",
   "outlook.com",
-  "xkcd.com"
+  "xkcd.com",
+  "github.com"
 ];
 var default_use_font = true;
 
