@@ -6,6 +6,7 @@ xkcd substitutions chrome extension
 All credit to XKCD.  
 https://xkcd.com/1288/
 https://xkcd.com/1625/
+https://xkcd.com/1679/
 
 some other xkcd jokes have made it into the newest version.
 https://xkcd.com/1004/
