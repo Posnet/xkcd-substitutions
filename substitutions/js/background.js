@@ -20,7 +20,7 @@ var default_replacements = [
   ['homeland security', 'homestar runner'],
   ['could not be reached for comment', 'is guilty and everyone knows it'],
 
-  // https://xkcd.com/1625/
+  //https://xkcd.com/1625/
   ['debate', 'dance-off'],
   ['debates', 'dance-offs'],
   ['self driving', 'uncontrollably swerving'],
@@ -67,7 +67,10 @@ var default_replacements = [
   ['forces', 'horses'],
 
   //https://xkcd.com/1004/
-  ['batman', 'a man dressed like a bat']
+  ['batman', 'a man dressed like a bat'],
+
+  //https://xkcd.com/37/
+  ['-ass ', ' ass-']
 ];
 //Default Blacklist
 var default_blacklisted_sites = [
@@ -77,7 +80,9 @@ var default_blacklisted_sites = [
   "inbox.google.com",
   "mail.yahoo.com",
   "outlook.com",
-  "xkcd.com"
+  "xkcd.com",
+  "explainxkcd.com",
+  "github.com"
 ];
 
 var debug = false;

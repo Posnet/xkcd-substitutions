@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
-  "name": "XKCD substitutions",
-  "description": "Making the web a stranger better place.",
+  "name": "XKCD Substitutions",
+  "description": "Making the web a s̶t̶r̶a̶n̶g̶e̶r better place.",
   "version": "1.4.1",
   "options_page": "html/config.html",
   "browser_action": {
     "default_icon": {
       "19": "images/enabled.png"
     },
-    "default_title": "click to disable xkcd substitutions"
+    "default_title": "Click to disable xkcd substitutions"
   },
   "background": {
     "scripts": [
